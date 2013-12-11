@@ -1,0 +1,37 @@
+/***************************** Layout *****************************/
+
+#page {
+	padding-top: 60px;
+	margin-bottom:20px;
+}
+
+/***************************** Active list *****************************/
+
+.active-list{
+	list-style-type:none;
+	margin:0;
+}
+
+.active-list>li:last-child{
+	margin-bottom:10px;
+}
+
+.active-list>li>i{
+	cursor:pointer;
+}
+
+.active-list>li>a + i + i{
+	display:none;
+}
+
+.active-list>li.deleted>a{
+	text-decoration:line-through;
+}
+
+.active-list>li.deleted>a + i{
+	display:none;
+}
+
+.active-list>li.deleted>a + i + i{
+	display:inline-block;
+}

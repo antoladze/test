@@ -1,9 +1,25 @@
 <?php
 
+/**
+ * Пользовательский класс для построения критериев отбора данных из модели.
+ */
 class DbCriteria extends CDbCriteria
 {
+	/**
+	 * Диапазоны дат.
+	 * @var array
+	 */
 	public static $ranges = array('today' => 'Сегодня', 'yesterday' => 'Вчера', 'week' => 'Эта неделя', 'month' => 'Последний месяц', 'year' => 'Последний год', 'old' => 'Более года');
 
+	/**
+	 * Метод производит сравнение даты с диапазоном.
+	 *
+	 * @param string $column
+	 * @param string $value
+	 * @param string $operator
+	 *
+	 * @return DbCriteria
+	 */
 	public function compareDate($column, $value, $operator = 'AND')
 	{
 		switch ($value) {
@@ -33,11 +49,32 @@ class DbCriteria extends CDbCriteria
 		return $this;
 	}
 
+	/**
+	 * Метод возвращает часть sql-запроса сравнения даты.
+	 * @static
+	 *
+	 * @param string $type
+	 * @param string $column
+	 * @param string $range
+	 * @param string $operator
+	 *
+	 * @return string
+	 */
 	protected static function dateDiff($type, $column, $range, $operator = '=')
 	{
 		return 'TIMESTAMPDIFF(' . $type . ', ' . $column . ', NOW()) ' . $operator . ' ' . $range;
 	}
 
+	/**
+	 * Метод производит полнотекстовый поиск.
+	 *
+	 * @param string $column
+	 * @param string $value
+	 * @param bool   $sortByRelevance
+	 * @param string $operator
+	 *
+	 * @return DbCriteria
+	 */
 	public function fulltextSearch($column, $value, $sortByRelevance = false, $operator = 'AND')
 	{
 		if ($value !== null && $value !== '' && $value !== array()) {
@@ -54,8 +91,9 @@ class DbCriteria extends CDbCriteria
 			$this->addCondition($condition . ' > 0', $operator);
 			$this->params[self::PARAM_PREFIX . self::$paramCount++] = $value;
 
+			//Сортировка по релевантности.
 			if ($sortByRelevance === true)
-				$this->order = 'ORDER BY ' . $condition . ' DESC';
+				$this->order = $condition . ' DESC';
 		}
 
 		return $this;

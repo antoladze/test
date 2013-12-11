@@ -4,16 +4,14 @@ Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Библиотека Компании',
-	'theme'=>'bootstrap',
 	'language' => 'ru',
 	'defaultController' => 'reader',
 
-	'preload'=>array('log'),
+	'preload'=>array('debug'),
 
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'application.behaviors.*',
 	),
 
 	'modules'=>array(
@@ -34,9 +32,6 @@ return array(
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'showScriptName' => false,
-			/*'rules'=>array(
-				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
-			),*/
 		),
 
 		'db'=>array(
@@ -45,6 +40,7 @@ return array(
 			'username' => 'root',
 			'password' => '',
 			'charset' => 'utf8',
+			'enableProfiling' => YII_DEBUG,
 		),
 
 		'errorHandler'=>array(
@@ -67,6 +63,11 @@ return array(
 
 		'format' => array(
 			'datetimeFormat' => 'd.m.Y H:i:s',
+		),
+
+		'debug' => array(
+			'enabled' => YII_DEBUG,
+			'class' => 'ext.yii2-debug.Yii2Debug',
 		),
 	),
 

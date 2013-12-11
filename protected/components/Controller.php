@@ -6,21 +6,40 @@ class Controller extends CController
 
 	public $breadcrumbs = array();
 
+	/**
+	 * Упрощенный способ подключения действий, вынесенных в отдельный класс.
+	 * @var array
+	 */
 	public $actions = array();
 
+	/**
+	 * Имя используемой в контроллере модели.
+	 * @var string
+	 */
 	public $modelName;
 
+	/**
+	 * Сообщение, выводимое в случае неудачного поиска записи модели.
+	 * @var string
+	 */
 	public $modelNotFoundMessage = 'Не удалось загрузить необходимые данные.';
 
 	public function init()
 	{
 		parent::init();
 
+		//Если имя модели не указано, ему присваивается имя контроллера.
 		if (!isset($this->modelName))
 			$this->modelName = ucfirst($this->id);
 	}
 
-	public function actions()
+	/**
+	 * Метод возвращает информацию о подключаемых действиях.
+	 * Получает данные из свойства $this->actions.
+	 *
+	 * @return array
+	 */
+	function actions()
 	{
 		$actions = array();
 
@@ -43,14 +62,27 @@ class Controller extends CController
 		return $actions;
 	}
 
+	/**
+	 * Метод производит поиск записи в модели по первичному ключу и обрабатывает результат.
+	 *
+	 * @param mixed $pk
+	 * @param array $criteria
+	 * @param bool  $allowNull
+	 *
+	 * @return string
+	 * @throws CHttpException
+	 * @throws CException
+	 */
 	public function loadModel($pk, $criteria = array(), $allowNull = false)
 	{
+		//Имя модели передается в переменной $criteria.
 		if (isset($criteria['model'])) {
 			$model = $criteria['model'];
 			unset($criteria['model']);
 		} else
 			$model = $this->modelName;
 
+		//Сообщение о ненайденной записи передается в переменной $criteria.
 		if (isset($criteria['message'])) {
 			$message = $criteria['message'];
 			unset($criteria['message']);
@@ -67,12 +99,19 @@ class Controller extends CController
 		else
 			throw new CException('Неизвестный тип параметра.');
 
+		//Если запись не найдена и пустое значение не допустимо вызывается исключение.
 		if (!$allowNull && $model === null)
 			throw new CHttpException(404, $message);
 
 		return $model;
 	}
 
+	/**
+	 * Валидация формы и вывод json-результата.
+	 *
+	 * @param mixed $model
+	 * @param string $ajax
+	 */
 	public function performAjaxValidation($model, $ajax = 'data-form')
 	{
 		if (Yii::app()->request->isAjaxRequest && isset($_POST['ajax']) && $_POST['ajax'] === $ajax) {
@@ -81,6 +120,14 @@ class Controller extends CController
 		}
 	}
 
+	/**
+	 * Рендеринг табов навигации.
+	 *
+	 * @param string $active
+	 * @param mixed $model
+	 *
+	 * @return string
+	 */
 	public function getNavTabs($active, $model = null)
 	{
 		$result = '<ul class="nav nav-tabs">';
@@ -93,6 +140,13 @@ class Controller extends CController
 		return $result . '</ul>';
 	}
 
+	/**
+	 * Метод возвращает список табов для данного контроллера.
+	 *
+	 * @param $model
+	 *
+	 * @return array
+	 */
 	public function getNavTabsItems($model)
 	{
 		return array(

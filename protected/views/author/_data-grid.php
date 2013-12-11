@@ -7,6 +7,11 @@ $this->widget('bootstrap.widgets.TbGridView',
 		 'columns' => array(
 			 'name',
 			 array(
+				 'header' => 'Книги',
+				 'type' => 'html',
+				 'value' => '$data->getBooks()',
+			 ),
+			 array(
 				 'name' => 'create',
 				 'type' => 'datetime',
 				 'filter' => DbCriteria::$ranges,

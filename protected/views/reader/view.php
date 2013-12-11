@@ -11,5 +11,10 @@ $this->widget('bootstrap.widgets.TbDetailView',
 			 'name',
 			 'create:datetime',
 			 'update:datetime',
+			 array(
+				 'label' => 'Держит книги',
+				 'type' => 'html',
+				 'value' => $model->getBooks('<br>'),
+			 ),
 		 ),
 	));

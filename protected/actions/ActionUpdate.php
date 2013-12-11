@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Действие создания и обновления записи.
+ */
 class ActionUpdate extends CAction
 {
 	public $view;

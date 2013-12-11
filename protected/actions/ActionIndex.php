@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Действие вывода списка элементов.
+ */
 class ActionIndex extends CAction
 {
 	public $modelName;

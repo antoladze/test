@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Действие удаления записи.
+ */
 class ActionDelete extends CAction
 {
 	public $redirect = array('index');
